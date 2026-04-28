@@ -1,7 +1,7 @@
 import RollupDoor from "./RollupDoor.jsx";
 
 export default function BuildingDoors({ config }) {
-  const { length } = config.dimensions;
+  const { width, length } = config.dimensions;
 
   return (
     <group>
@@ -10,8 +10,8 @@ export default function BuildingDoors({ config }) {
           return (
             <RollupDoor
               key={door.id}
-              x={door.x}
-              z={length / 2 + 0.35}
+              position={[door.x, door.height / 2, length / 2 + 0.35]}
+              rotation={[0, 0, 0]}
               width={door.width}
               height={door.height}
               color={config.colors.doors}
@@ -23,8 +23,34 @@ export default function BuildingDoors({ config }) {
           return (
             <RollupDoor
               key={door.id}
-              x={door.x}
-              z={-length / 2 - 0.35}
+              position={[door.x, door.height / 2, -length / 2 - 0.35]}
+              rotation={[0, Math.PI, 0]}
+              width={door.width}
+              height={door.height}
+              color={config.colors.doors}
+            />
+          );
+        }
+
+        if (door.wall === "left") {
+          return (
+            <RollupDoor
+              key={door.id}
+              position={[-width / 2 - 0.35, door.height / 2, door.x]}
+              rotation={[0, Math.PI / 2, 0]}
+              width={door.width}
+              height={door.height}
+              color={config.colors.doors}
+            />
+          );
+        }
+
+        if (door.wall === "right") {
+          return (
+            <RollupDoor
+              key={door.id}
+              position={[width / 2 + 0.35, door.height / 2, door.x]}
+              rotation={[0, Math.PI / 2, 0]}
               width={door.width}
               height={door.height}
               color={config.colors.doors}

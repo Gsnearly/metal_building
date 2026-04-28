@@ -10,6 +10,7 @@ export default function ConfiguratorSidebar() {
   const updateColor = useConfiguratorStore((state) => state.updateColor);
   const addDoor = useConfiguratorStore((state) => state.addDoor);
   const removeDoor = useConfiguratorStore((state) => state.removeDoor);
+  const updateDoor = useConfiguratorStore((state) => state.updateDoor);
 
   return (
     <aside className="sidebar">
@@ -81,23 +82,101 @@ export default function ConfiguratorSidebar() {
           </button>
 
           <div className="item-list">
-            {config.doors.map((door, index) => (
-              <div className="config-item" key={door.id}>
-                <div>
-                  <strong>Door {index + 1}</strong>
-                  <span>
-                    {door.width}ft × {door.height}ft — {door.wall}
-                  </span>
-                </div>
+            {config.doors.map((door, index) => {
+              const maxPosition =
+                door.wall === "front" || door.wall === "back"
+                  ? config.dimensions.width / 2 - door.width / 2
+                  : config.dimensions.length / 2 - door.width / 2;
 
-                <button
-                  className="delete-button"
-                  onClick={() => removeDoor(door.id)}
-                >
-                  <Trash2 size={15} />
-                </button>
-              </div>
-            ))}
+              return (
+                <div className="config-item vertical" key={door.id}>
+                  <div className="config-item-header">
+                    <div>
+                      <strong>Door {index + 1}</strong>
+                      <span>
+                        {door.width}ft × {door.height}ft — {door.wall}
+                      </span>
+                    </div>
+
+                    <button
+                      className="delete-button"
+                      onClick={() => removeDoor(door.id)}
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
+
+                  <label className="mini-control">
+                    Wall
+                    <select
+                      value={door.wall}
+                      onChange={(event) =>
+                        updateDoor(door.id, {
+                          wall: event.target.value,
+                          x: 0,
+                        })
+                      }
+                    >
+                      <option value="front">Front</option>
+                      <option value="back">Back</option>
+                      <option value="left">Left</option>
+                      <option value="right">Right</option>
+                    </select>
+                  </label>
+
+                  <label className="mini-control">
+                    Position
+                    <input
+                      type="range"
+                      min={-maxPosition}
+                      max={maxPosition}
+                      step="1"
+                      value={door.x}
+                      onChange={(event) =>
+                        updateDoor(door.id, {
+                          x: Number(event.target.value),
+                        })
+                      }
+                    />
+                    <span>{door.x} ft</span>
+                  </label>
+
+                  <label className="mini-control">
+                    Width
+                    <input
+                      type="range"
+                      min="6"
+                      max="16"
+                      step="1"
+                      value={door.width}
+                      onChange={(event) =>
+                        updateDoor(door.id, {
+                          width: Number(event.target.value),
+                        })
+                      }
+                    />
+                    <span>{door.width} ft</span>
+                  </label>
+
+                  <label className="mini-control">
+                    Height
+                    <input
+                      type="range"
+                      min="7"
+                      max={config.dimensions.height - 1}
+                      step="1"
+                      value={door.height}
+                      onChange={(event) =>
+                        updateDoor(door.id, {
+                          height: Number(event.target.value),
+                        })
+                      }
+                    />
+                    <span>{door.height} ft</span>
+                  </label>
+                </div>
+              );
+            })}
           </div>
         </ControlGroup>
 

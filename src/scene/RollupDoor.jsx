@@ -1,6 +1,6 @@
-export default function RollupDoor({ x, z, width, height, color }) {
+export default function RollupDoor({ position, rotation, width, height, color }) {
   return (
-    <group position={[x, height / 2, z]}>
+    <group position={position} rotation={rotation}>
       <mesh castShadow>
         <boxGeometry args={[width, height, 0.35]} />
         <meshStandardMaterial color={color} roughness={0.4} />

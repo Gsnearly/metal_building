@@ -52,6 +52,16 @@ export const useConfiguratorStore = create((set) => ({
       },
     })),
 
+  updateDoor: (id, updates) =>
+    set((state) => ({
+      config: {
+        ...state.config,
+        doors: state.config.doors.map((door) =>
+          door.id === id ? { ...door, ...updates } : door
+        ),
+      },
+    })),
+
   removeDoor: (id) =>
     set((state) => ({
       config: {
