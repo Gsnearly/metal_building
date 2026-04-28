@@ -29,6 +29,7 @@ npm install
 
 ```bash
 npm run dev
+npm run dev -- --host 0.0.0.0
 ```
 
 Then open the local URL Vite gives you.

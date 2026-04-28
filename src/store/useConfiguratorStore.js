@@ -6,7 +6,7 @@ function clampNumber(value, min, max) {
 }
 
 export const useConfiguratorStore = create((set) => ({
-  config: DEFAULT_CONFIG,
+  config: structuredClone(DEFAULT_CONFIG),
 
   updateDimension: (key, value) =>
     set((state) => ({
@@ -31,6 +31,32 @@ export const useConfiguratorStore = create((set) => ({
           ...state.config.colors,
           [key]: value,
         },
+      },
+    })),
+
+  addDoor: () =>
+    set((state) => ({
+      config: {
+        ...state.config,
+        doors: [
+          ...state.config.doors,
+          {
+            id: `door-${Date.now()}`,
+            type: "rollup",
+            wall: "front",
+            x: 0,
+            width: 10,
+            height: 9,
+          },
+        ],
+      },
+    })),
+
+  removeDoor: (id) =>
+    set((state) => ({
+      config: {
+        ...state.config,
+        doors: state.config.doors.filter((door) => door.id !== id),
       },
     })),
 

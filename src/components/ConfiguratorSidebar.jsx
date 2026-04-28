@@ -1,4 +1,4 @@
-import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal, Plus, Trash2 } from "lucide-react";
 import ControlGroup from "./ControlGroup.jsx";
 import NumberControl from "./NumberControl.jsx";
 import ColorControl from "./ColorControl.jsx";
@@ -8,6 +8,8 @@ export default function ConfiguratorSidebar() {
   const config = useConfiguratorStore((state) => state.config);
   const updateDimension = useConfiguratorStore((state) => state.updateDimension);
   const updateColor = useConfiguratorStore((state) => state.updateColor);
+  const addDoor = useConfiguratorStore((state) => state.addDoor);
+  const removeDoor = useConfiguratorStore((state) => state.removeDoor);
 
   return (
     <aside className="sidebar">
@@ -70,6 +72,33 @@ export default function ConfiguratorSidebar() {
             value={config.colors.doors}
             onChange={(value) => updateColor("doors", value)}
           />
+        </ControlGroup>
+
+        <ControlGroup title="Doors">
+          <button className="add-button" onClick={addDoor}>
+            <Plus size={16} />
+            Add Roll-Up Door
+          </button>
+
+          <div className="item-list">
+            {config.doors.map((door, index) => (
+              <div className="config-item" key={door.id}>
+                <div>
+                  <strong>Door {index + 1}</strong>
+                  <span>
+                    {door.width}ft × {door.height}ft — {door.wall}
+                  </span>
+                </div>
+
+                <button
+                  className="delete-button"
+                  onClick={() => removeDoor(door.id)}
+                >
+                  <Trash2 size={15} />
+                </button>
+              </div>
+            ))}
+          </div>
         </ControlGroup>
 
         <ControlGroup title="Current Configuration JSON">
